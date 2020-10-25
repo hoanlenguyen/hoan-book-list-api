@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoanBookListAPI", "HoanBookListAPI.csproj", "{89C13E67-35FC-4F83-9471-BE73AE8D9049}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{89C13E67-35FC-4F83-9471-BE73AE8D9049}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89C13E67-35FC-4F83-9471-BE73AE8D9049}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89C13E67-35FC-4F83-9471-BE73AE8D9049}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89C13E67-35FC-4F83-9471-BE73AE8D9049}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {821596A8-637B-49FE-AD30-91DBED51BE11}
+	EndGlobalSection
+EndGlobal
