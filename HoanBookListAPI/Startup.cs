@@ -38,21 +38,11 @@ namespace HoanBookListAPI
         {
             try
             {
-                //var configuration = builder.GetContext().Configuration;
+                var configuration = builder.GetContext().Configuration;
 
-                builder.Services
-                    .AddOptions<MongoDbConnectionSettings>()
-                    .Configure<IConfiguration>((settings, configuration) =>
-                    {
-                        configuration.GetSection(DbConnectionConfigs.MongoDBConnectionSetting).Bind(settings);
-                    });
+                builder.Services.AddMongoDbContext(configuration);
 
-                builder.Services.TryAddSingleton<IMongoDbConnectionSettings>(sp =>
-                                sp.GetRequiredService<IOptions<MongoDbConnectionSettings>>().Value);
-
-                builder.Services.TryAddSingleton<MongoDbContext>();
-
-                builder.Services.TryAddScoped<BookService>();
+                builder.Services.AddBookListServices();
             }
             catch (Exception ex)
             {
