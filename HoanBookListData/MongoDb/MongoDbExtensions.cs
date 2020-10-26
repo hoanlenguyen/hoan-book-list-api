@@ -12,7 +12,7 @@ namespace HoanBookListData.MongoDb
             services.AddOptions<MongoDbConnectionSettings>()
                     .Configure<IConfiguration>((settings, configuration) =>
                     {
-                       var x= configuration.GetSection(DbConnectionConfigs.MongoDBConnectionSetting);
+                        configuration.GetSection(DbConnectionConfigs.MongoDBConnectionSetting);
                     });
 
             services.TryAddSingleton<IMongoDbConnectionSettings>(sp =>
@@ -23,7 +23,7 @@ namespace HoanBookListData.MongoDb
             return services;
         }
 
-        public static IServiceCollection AddMongoDbContext(this IServiceCollection services, IConfigurationRoot configuration)
+        public static IServiceCollection AddMongoDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<MongoDbConnectionSettings>(config =>
                        configuration.GetSection(DbConnectionConfigs.MongoDBConnectionSetting));

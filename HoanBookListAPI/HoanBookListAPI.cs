@@ -48,5 +48,15 @@ namespace HoanBookListAPI
 
             return new OkObjectResult(_bookService.GetConnectionString());
         }
+
+        [FunctionName(nameof(GetBooks))]
+        public async Task<IActionResult> GetBooks(
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            return new OkObjectResult(_bookService.Get());
+        }
     }
 }
