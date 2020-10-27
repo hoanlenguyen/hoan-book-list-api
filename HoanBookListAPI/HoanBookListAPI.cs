@@ -39,24 +39,40 @@ namespace HoanBookListAPI
             return new OkObjectResult(responseMessage);
         }
 
-        [FunctionName(nameof(GetConnectionString))]
-        public async Task<IActionResult> GetConnectionString(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
-        {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+        //[FunctionName(nameof(GetConnectionString))]
+        //public async Task<IActionResult> GetConnectionString(
+        //    [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+        //    ILogger log)
+        //{
+        //    log.LogInformation("C# HTTP trigger function processed a request.");
 
-            return new OkObjectResult(_bookService.GetConnectionString());
-        }
+        //    return new OkObjectResult(_bookService.GetConnectionString());
+        //}
 
         [FunctionName(nameof(GetBooks))]
         public async Task<IActionResult> GetBooks(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            //log.LogInformation("C# HTTP trigger function processed a request.");
 
             return new OkObjectResult(_bookService.Get());
+        }
+
+        [FunctionName(nameof(GetBookById))]
+        public async Task<IActionResult> GetBookById(
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+            //log.LogInformation("C# HTTP trigger function processed a request.");
+
+            string id = req.Query["id"];
+
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            dynamic data = JsonConvert.DeserializeObject(requestBody);
+            id = id ?? data?.id;
+
+            return new OkObjectResult(_bookService.Get(id));
         }
     }
 }
