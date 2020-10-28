@@ -82,7 +82,7 @@ namespace HoanBookListData.Services
         {
             if (request.CurrentPage == null || request.ItemsPerPage == null)
             {
-                var result = FilterMongoCollection(filter);
+                var result = FilterBookCollection(filter);
                 return new PagingResult
                 {
                     Items = result.Items,
@@ -91,7 +91,7 @@ namespace HoanBookListData.Services
             }
             var skipItems = (request.CurrentPage.Value - 1) * request.ItemsPerPage.Value;
 
-            var (item, count) = FilterMongoCollection(filter, skipItems, request.ItemsPerPage.Value);
+            var (item, count) = FilterBookCollection(filter, skipItems, request.ItemsPerPage.Value);
 
             //var maxPage = (int)Math.Ceiling((double)count / request.ItemsPerPage.Value);
 
@@ -104,7 +104,7 @@ namespace HoanBookListData.Services
             };
         }
 
-        private (IEnumerable<string> Items, int Count) FilterMongoCollection(BookFilter filter, int? skip = null, int? take = null)
+        private (IEnumerable<Book> Items, int Count) FilterBookCollection(BookFilter filter, int? skip = null, int? take = null)
         {
             var items = _books.AsQueryable()
                               .WhereIf(filter.BookName.HasValue(), x => x.BookName.Contains(filter.BookName))
@@ -112,10 +112,10 @@ namespace HoanBookListData.Services
                               .Where(x => filter.Rate == null || x.Rate >= filter.Rate)
 
                               .OrderBy(filter.SortFieldName, filter.IsAscending)
-                              .Select(x => x.Author)
+                              //.Select(x => x.Author)
                               ;
 
-            var count = items.Count<string>();
+            var count = items.Count<Book>();
 
             if (skip.HasValue)
                 items = items.Skip(skip.Value);

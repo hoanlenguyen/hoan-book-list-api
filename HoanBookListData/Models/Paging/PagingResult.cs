@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 
 namespace HoanBookListData.Models.Paging
 {
@@ -17,5 +18,7 @@ namespace HoanBookListData.Models.Paging
                                     : false;
 
         public bool HasPreviousPage => CurrentPage.GetValueOrDefault() > 1;
+
+        public int? MaxPage => ItemsPerPage != null ? (int)Math.Ceiling((double)MaxItemCount / ItemsPerPage.Value) : 1;
     }
 }

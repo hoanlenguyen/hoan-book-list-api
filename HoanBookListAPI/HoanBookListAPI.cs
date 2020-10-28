@@ -1,3 +1,5 @@
+using HoanBookListData.Models;
+using HoanBookListData.Models.Paging;
 using HoanBookListData.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -5,6 +7,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -39,16 +42,6 @@ namespace HoanBookListAPI
             return new OkObjectResult(responseMessage);
         }
 
-        //[FunctionName(nameof(GetConnectionString))]
-        //public async Task<IActionResult> GetConnectionString(
-        //    [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-        //    ILogger log)
-        //{
-        //    log.LogInformation("C# HTTP trigger function processed a request.");
-
-        //    return new OkObjectResult(_bookService.GetConnectionString());
-        //}
-
         [FunctionName(nameof(GetBooks))]
         public async Task<IActionResult> GetBooks(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
@@ -73,6 +66,22 @@ namespace HoanBookListAPI
             id = id ?? data?.id;
 
             return new OkObjectResult(_bookService.Get(id));
+        }
+
+        [FunctionName(nameof(PageIndexing))]
+        public async Task<IActionResult> PageIndexing(
+            [HttpTrigger(AuthorizationLevel.Function, /*"get",*/ "post", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+            //log.LogInformation("C# HTTP trigger function processed a request.");
+
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+
+            var request = JObject.Parse(requestBody)["request"].ToObject<PagingRequest>();
+
+            var filter = JObject.Parse(requestBody)["filter"].ToObject<BookFilter>();
+
+            return new OkObjectResult( _bookService.PageIndexingItems(request,filter));
         }
     }
 }
