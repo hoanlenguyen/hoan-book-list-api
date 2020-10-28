@@ -3,11 +3,8 @@ using HoanBookListData.Services;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
-using System;
 using System.IO;
-using System.Reflection;
 
 [assembly: FunctionsStartup(typeof(HoanBookListAPI.Startup))]
 
@@ -17,43 +14,28 @@ namespace HoanBookListAPI
     {
         public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
         {
-            try
-            {
-                var basePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..");
-                var environmentName = builder.GetContext().EnvironmentName;
-                builder.ConfigurationBuilder
-                    .SetBasePath(basePath)
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                    .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: true)
-                    .AddEnvironmentVariables();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            FunctionsHostBuilderContext context = builder.GetContext();
+
+            builder.ConfigurationBuilder
+                .AddJsonFile(Path.Combine(context.ApplicationRootPath, "appsettings.json"), optional: true, reloadOnChange: false)
+                .AddJsonFile(Path.Combine(context.ApplicationRootPath, $"appsettings.{context.EnvironmentName}.json"), optional: true, reloadOnChange: false)
+                .AddEnvironmentVariables();
         }
 
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            try
-            {
-                //var configuration = builder.GetContext().Configuration;
+            //var configuration = builder.GetContext().Configuration;
 
-                builder.Services.AddOptions<MongoDbConnectionSettings>()
-                    .Configure<IConfiguration>((settings, config) =>
-                        config.GetSection(DbConnectionConfigs.MongoDBConnectionSetting).Bind(settings));
+            builder.Services.AddOptions<MongoDbConnectionSettings>()
+                .Configure<IConfiguration>((settings, config) =>
+                    config.GetSection(DbConnectionConfigs.MongoDBConnectionSetting).Bind(settings));
 
-                builder.Services.TryAddSingleton<IMongoDbConnectionSettings>(sp =>
-                                sp.GetRequiredService<IOptions<MongoDbConnectionSettings>>().Value);
+            builder.Services.AddSingleton<IMongoDbConnectionSettings>(sp =>
+                            sp.GetRequiredService<IOptions<MongoDbConnectionSettings>>().Value);
 
-                builder.Services.TryAddSingleton<MongoDbContext>();
+            builder.Services.AddSingleton<MongoDbContext>();
 
-                builder.Services.TryAddScoped<BookService>();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            builder.Services.AddSingleton<BookService>();
         }
     }
 }

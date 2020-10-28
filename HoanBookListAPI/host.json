@@ -1,13 +1,3 @@
 {
-  "version": "2.0",
-  "IsEncrypted": false,
-  "Values": {
-    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet"
-  },
-  "MongoDbConnectionSettings": {
-    "CollectionName": "Books",
-    "ConnectionString": "mongodb+srv://HoanMongoDb:qwe123@hoancluster.1nhf6.azure.mongodb.net/HoanMongoDb?retryWrites=true&w=majority",
-    "DatabaseName": "HoanMongoDb"
-  }
+  "version": "2.0"
 }

@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System.ComponentModel.DataAnnotations;
 
 namespace HoanBookListData.Models.BaseEntities
 {
@@ -8,7 +7,6 @@ namespace HoanBookListData.Models.BaseEntities
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        [MaxLength(24)]
         public string Id { get; set; }
     }
 }
