@@ -23,12 +23,12 @@ namespace HoanBookListAPI
             Credentials credentials,
             ILogger log)
         {
-            var (success, token) = _jwtAuthentication.Login(credentials);
+            var (success, token, user) = _jwtAuthentication.Login(credentials);
 
             if (!success)
                 return new UnauthorizedResult();
 
-            return new OkObjectResult(token);
+            return new OkObjectResult(new { token, user });
         }
 
         [FunctionName("VerifyUser")]

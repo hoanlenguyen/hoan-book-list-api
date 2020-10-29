@@ -11,39 +11,31 @@ namespace Authentication.Services
 {
     public class JwtAuthenticationService
     {
-        private readonly IJwtAlgorithm _algorithm;
-        private readonly IJsonSerializer _serializer;
-        private readonly IBase64UrlEncoder _base64Encoder;
-        private readonly IJwtEncoder _jwtEncoder;
-
         public JwtAuthenticationService()
         {
-            _algorithm = new HMACSHA256Algorithm();
-            _serializer = new JsonNetSerializer();
-            _base64Encoder = new JwtBase64UrlEncoder();
-            _jwtEncoder = new JwtEncoder(_algorithm, _serializer, _base64Encoder);
         }
 
-        public (bool Success, string Token) Login(Credentials credentials)
+        public (bool Success, string Token, UserInfo User) Login(Credentials credentials)
         {
             var (success, user) = FixedUsers.CheckLoginCredentials(credentials);
             if (!success)
-                return (false, "");
+                return (false, "", null);
 
             var claims = new Dictionary<string, object>
             {
-                { "username", user.Credentials.Username },
+                { "username", user.Username },
+                { "expires", DateTime.UtcNow.AddMinutes(120) },
                 { "role", user.Roles}
             };
 
-            var token = _jwtEncoder.Encode(claims, JWTSettings.SecretKey);
+            var jwtEncoder = new JwtEncoder(new HMACSHA256Algorithm(), new JsonNetSerializer(), new JwtBase64UrlEncoder());
+            var token = jwtEncoder.Encode(claims, JWTSettings.SecretKey);
 
-            return (true, token);
+            return (true, token, user);
         }
 
-        public (bool IsValid, ApplicationUser user) VerifyUser(HttpRequest request)
+        public (bool IsValid, UserInfo user) VerifyUser(HttpRequest request)
         {
-
             string bearerToken = request.Headers["Authorization"];
             if (string.IsNullOrEmpty(bearerToken))
                 return (false, null);
@@ -59,14 +51,18 @@ namespace Authentication.Services
                .MustVerifySignature()
                .Decode<IDictionary<string, object>>(token);
 
-            if (!claims.ContainsKey("username"))
+            if (!claims.ContainsKey("username")|| !claims.ContainsKey("expires"))
+                return (false, null);
+
+            var expires = Convert.ToDateTime(claims["expires"]);
+            if (expires < DateTime.UtcNow)
                 return (false, null);
 
             var user = FixedUsers.FindUserByUsername(Convert.ToString(claims["username"]));
             if (user == null)
                 return (false, null);
 
-            return (true, user);
+            return (true, user.ToUserInfo());
         }
     }
 }
