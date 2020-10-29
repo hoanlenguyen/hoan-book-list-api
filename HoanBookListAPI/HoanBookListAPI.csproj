@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.7" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Authentication\Authentication.csproj" />
     <ProjectReference Include="..\HoanBookListData\HoanBookListData.csproj" />
   </ItemGroup>
   <ItemGroup>

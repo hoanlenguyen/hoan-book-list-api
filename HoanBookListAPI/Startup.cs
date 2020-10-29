@@ -1,4 +1,5 @@
-﻿using HoanBookListData.MongoDb;
+﻿using Authentication.Services;
+using HoanBookListData.MongoDb;
 using HoanBookListData.Services;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +26,8 @@ namespace HoanBookListAPI
         public override void Configure(IFunctionsHostBuilder builder)
         {
             //var configuration = builder.GetContext().Configuration;
+
+            builder.Services.AddJwtAuthentication();
 
             builder.Services.AddOptions<MongoDbConnectionSettings>()
                 .Configure<IConfiguration>((settings, config) =>
