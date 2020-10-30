@@ -3,6 +3,7 @@ using HoanBookListData.ExternalAPIs;
 using HoanBookListData.Models;
 using HoanBookListData.Models.Paging;
 using HoanBookListData.MongoDb;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System;
@@ -32,8 +33,13 @@ namespace HoanBookListData.Services
         public List<Book> Get() =>
             _books.Find(book => true).ToList();
 
-        public Book Get(string id) =>
-            _books.Find<Book>(book => book.Id == id).FirstOrDefault();
+        public Book Get(string id) 
+        {
+            if (!ObjectId.TryParse(id, out var objectId))
+                return null;
+
+            return _books.Find<Book>(book => book.Id == id).FirstOrDefault();
+        }
 
         public IEnumerable<Book> GetByCategory(string genre) =>
            _books.Find<Book>(book => book.MainGenre == genre).ToEnumerable();

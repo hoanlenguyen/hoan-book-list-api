@@ -1,3 +1,4 @@
+using Authentication.Services;
 using HoanBookListData.Models;
 using HoanBookListData.Models.Paging;
 using HoanBookListData.Services;
@@ -14,48 +15,67 @@ namespace HoanBookListAPI
 {
     public class HoanBookListAPI
     {
+        private readonly JwtAuthenticationService _jwtAuth;
         private readonly BookService _bookService;
 
-        public HoanBookListAPI(BookService bookService)
+        public HoanBookListAPI(BookService bookService, JwtAuthenticationService jwtAuth)
         {
             _bookService = bookService;
+            _jwtAuth = jwtAuth;
         }
 
         [FunctionName("ConnStr")]
         public IActionResult ConnectionString(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get"/*, "post"*/, Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "mongodb/connstr")] HttpRequest req,
             ILogger log)
         {
             //log.LogInformation("C# HTTP trigger function processed a request.");
+            var (verify, user) = _jwtAuth.VerifyUser(req);
+
+            if (!verify)
+                return new UnauthorizedResult();
 
             return new OkObjectResult(_bookService.GetConnectionString());
         }
 
         [FunctionName(nameof(GetBooks))]
         public IActionResult GetBooks(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get"/*, "post"*/, Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "books")] HttpRequest req,
             ILogger log)
         {
+            var (verify, user) = _jwtAuth.VerifyUser(req);
+
+            if (!verify)
+                return new UnauthorizedResult();
+
             return new OkObjectResult(_bookService.Get());
         }
 
         [FunctionName(nameof(GetBookById))]
         public IActionResult GetBookById(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get"/*, "post"*/, Route = null)] HttpRequest req,
-            ILogger log)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "books/{id}")] 
+            HttpRequest req, string id, ILogger log)
         {
-            string id = req.Query["id"];
-
             if (string.IsNullOrEmpty(id))
-                return null;
+                return new BadRequestObjectResult("Id is not found!");
+
+            var (verify, user) = _jwtAuth.VerifyUser(req);
+
+            if (!verify)
+                return new UnauthorizedResult();            
 
             return new OkObjectResult(_bookService.Get(id));
         }
 
         [FunctionName(nameof(PageIndexing))]
         public async Task<IActionResult> PageIndexing(
-            [HttpTrigger(AuthorizationLevel.Anonymous, /*"get",*/ "post", Route = null)] HttpRequest req /*, ILogger log*/)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "books/paging")] HttpRequest req)
         {
+            var (verify, user) = _jwtAuth.VerifyUser(req);
+
+            if (!verify)
+                return new UnauthorizedResult();
+
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
             var request = JObject.Parse(requestBody)["request"].ToObject<PagingRequest>();

@@ -11,19 +11,19 @@ namespace HoanBookListAPI
 {
     public class AuthenticationAPI
     {
-        private readonly JwtAuthenticationService _jwtAuthentication;
-        public AuthenticationAPI(JwtAuthenticationService jwtAuthentication)
+        private readonly JwtAuthenticationService _jwtAuth;
+        public AuthenticationAPI(JwtAuthenticationService jwtAuth)
         {
-            _jwtAuthentication = jwtAuthentication;
+            _jwtAuth = jwtAuth;
         }
 
-        [FunctionName("Authenticate")]
+        [FunctionName(nameof(Authenticate))]
         public async Task<IActionResult> Authenticate(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "auth")]
             Credentials credentials,
             ILogger log)
         {
-            var (success, token, user) = _jwtAuthentication.Login(credentials);
+            var (success, token, user) = _jwtAuth.Login(credentials);
 
             if (!success)
                 return new UnauthorizedResult();
@@ -31,13 +31,13 @@ namespace HoanBookListAPI
             return new OkObjectResult(new { token, user });
         }
 
-        [FunctionName("VerifyUser")]
+        [FunctionName(nameof(VerifyUser))]
         public async Task<IActionResult> VerifyUser(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "verify")]
             HttpRequest req,
             ILogger log)
         {
-            var (verify, user) = _jwtAuthentication.VerifyUser(req);
+            var (verify, user) = _jwtAuth.VerifyUser(req);
 
             if (!verify)
                 return new UnauthorizedResult();
