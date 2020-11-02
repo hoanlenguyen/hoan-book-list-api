@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoanBookListAPI", "HoanBook
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoanBookListData", "..\HoanBookListData\HoanBookListData.csproj", "{D92FF26C-541C-4C10-BEAF-A0419A5835E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication", "..\Authentication\Authentication.csproj", "{39A380D7-C504-4D05-9221-EA2EED90E392}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentication", "..\Authentication\Authentication.csproj", "{39A380D7-C504-4D05-9221-EA2EED90E392}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
