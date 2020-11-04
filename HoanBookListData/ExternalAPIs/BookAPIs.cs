@@ -47,7 +47,7 @@ namespace HoanBookListData.ExternalAPIs
                             book.SubGenres.AddRange(GenreList.GetRandomGenres());
                             book.Rate = GetRandomNumber(3, 5);
                             book.Rate = GetRandomNumber(3, 5);
-                            book.BookName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(book.BookName.ToLower());
+                            book.Title = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(book.Title.ToLower());
                         }
                         list.AddRange(books);
                     }

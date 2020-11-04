@@ -2,8 +2,8 @@
 {
     public interface ISortable
     {
-        string SortFieldName { get; set; }
+        string SortBy { get; set; }
 
-        bool IsAscending { get; set; }
+        bool IsAsc { get; set; }
     }
 }

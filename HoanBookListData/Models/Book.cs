@@ -10,7 +10,7 @@ namespace HoanBookListData.Models
     {
         [BsonElement("Name")]
         [JsonProperty("title")]
-        public string BookName { get; set; }
+        public string Title { get; set; }
 
         public string MainGenre { get; set; }
 

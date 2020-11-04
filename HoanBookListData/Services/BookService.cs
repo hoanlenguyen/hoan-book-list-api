@@ -45,7 +45,7 @@ namespace HoanBookListData.Services
            _books.Find<Book>(book => book.MainGenre == genre).ToEnumerable();
 
         public IEnumerable<Book> FindByNamekey(string key) =>
-           _books.AsQueryable().Where(x => x.BookName.Contains(key));
+           _books.AsQueryable().Where(x => x.Title.Contains(key));
 
         public Book Create(Book book)
         {
@@ -99,8 +99,6 @@ namespace HoanBookListData.Services
 
             var (item, count) = FilterBookCollection(filter, skipItems, request.ItemsPerPage.Value);
 
-            //var maxPage = (int)Math.Ceiling((double)count / request.ItemsPerPage.Value);
-
             return new PagingResult
             {
                 CurrentPage = request.CurrentPage,
@@ -113,12 +111,15 @@ namespace HoanBookListData.Services
         private (IEnumerable<Book> Items, int Count) FilterBookCollection(BookFilter filter, int? skip = null, int? take = null)
         {
             var items = _books.AsQueryable()
-                              .WhereIf(filter.BookName.HasValue(), x => x.BookName.Contains(filter.BookName))
+                              .WhereIf(filter.BookName.HasValue(), x => x.Title.Contains(filter.BookName))
                               .WhereIf(filter.Author.HasValue(), x => x.Author.Contains(filter.Author))
                               .Where(x => filter.Rate == null || x.Rate >= filter.Rate);
                               
-            if (filter.SortFieldName.HasValue())
-                items = items.OrderBy(filter.SortFieldName, filter.IsAscending);
+            if (filter.SortBy.HasValue())
+            {
+                filter.SortBy= char.ToUpper(filter.SortBy[0]) + filter.SortBy.Substring(1);
+                items = items.OrderBy(filter.SortBy, filter.IsAsc);
+            }                
 
             var count = items.Count<Book>();
 
