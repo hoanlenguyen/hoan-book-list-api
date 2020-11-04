@@ -115,11 +115,10 @@ namespace HoanBookListData.Services
             var items = _books.AsQueryable()
                               .WhereIf(filter.BookName.HasValue(), x => x.BookName.Contains(filter.BookName))
                               .WhereIf(filter.Author.HasValue(), x => x.Author.Contains(filter.Author))
-                              .Where(x => filter.Rate == null || x.Rate >= filter.Rate)
-
-                              .OrderBy(filter.SortFieldName, filter.IsAscending)
-                              //.Select(x => x.Author)
-                              ;
+                              .Where(x => filter.Rate == null || x.Rate >= filter.Rate);
+                              
+            if (filter.SortFieldName.HasValue())
+                items = items.OrderBy(filter.SortFieldName, filter.IsAscending);
 
             var count = items.Count<Book>();
 

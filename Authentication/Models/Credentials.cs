@@ -5,7 +5,7 @@ namespace Authentication.Models
     public class Credentials
     {
         [Required]
-        [Display(Name = "UserName")]
+        [Display(Name = "Username")]
         public string Username { get; set; }
 
         [Required]

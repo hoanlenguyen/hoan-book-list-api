@@ -43,10 +43,10 @@ namespace HoanBookListAPI
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "books")] HttpRequest req,
             ILogger log)
         {
-            //var (verify, user) = _jwtAuth.VerifyUser(req);
+            var (verify, user) = _jwtAuth.VerifyUser(req);
 
-            //if (!verify)
-            //    return new UnauthorizedResult();
+            if (!verify)
+                return new UnauthorizedResult();
 
             return new OkObjectResult(_bookService.Get());
         }
@@ -83,15 +83,6 @@ namespace HoanBookListAPI
             var filter = JObject.Parse(requestBody)["filter"].ToObject<BookFilter>();
 
             return new OkObjectResult(_bookService.PageIndexingItems(request, filter));
-        }
-
-        [FunctionName("Test")]
-        public static async Task<IActionResult> Test(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "test")] HttpRequest req
-        )
-        {
-            var data = new { id = 1, name = "Hoan" };
-            return new OkObjectResult(data);
         }
     }
 }
