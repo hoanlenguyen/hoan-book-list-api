@@ -111,7 +111,7 @@ namespace HoanBookListData.Services
         private (IEnumerable<Book> Items, int Count) FilterBookCollection(BookFilter filter, int? skip = null, int? take = null)
         {
             var items = _books.AsQueryable()
-                              .WhereIf(filter.BookName.HasValue(), x => x.Title.Contains(filter.BookName))
+                              .WhereIf(filter.Title.HasValue(), x => x.Title.Contains(filter.Title))
                               .WhereIf(filter.Author.HasValue(), x => x.Author.Contains(filter.Author))
                               .Where(x => filter.Rate == null || x.Rate >= filter.Rate);
                               

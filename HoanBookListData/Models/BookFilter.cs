@@ -5,9 +5,7 @@ namespace HoanBookListData.Models
 {
     public class BookFilter : ISortable
     {
-        //private string _sortBy="";
-
-        public string BookName { get; set; }
+        public string Title { get; set; }
 
         public string MainGenre { get; set; }
 
