@@ -96,7 +96,7 @@ namespace HoanBookListData.Services
             if (book == null)
                 return false;
 
-            var userBook = _userBooks.Find(x => x.UserId == userId && x.BookId == userId)
+            var userBook = _userBooks.Find(x => x.UserId == userId && x.BookId == bookId)
                                          .FirstOrDefault();
 
             if (userBook != null)
@@ -130,7 +130,7 @@ namespace HoanBookListData.Services
             if (book == null)
                 return false;
 
-            var userBook = _userBooks.Find(x => x.UserId == userId && x.BookId == userId)
+            var userBook = _userBooks.Find(x => x.UserId == userId && x.BookId == bookId)
                                          .FirstOrDefault();
 
             if (userBook != null)
