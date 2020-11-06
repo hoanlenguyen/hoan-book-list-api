@@ -97,7 +97,7 @@ namespace HoanBookListData.Services
                 return false;
 
             var userBook = _userBooks.Find(x => x.UserId == userId && x.BookId == bookId)
-                                         .FirstOrDefault();
+                                     .FirstOrDefault();
 
             if (userBook != null)
             {
@@ -116,8 +116,8 @@ namespace HoanBookListData.Services
 
             if (like)
                 book.TotalLikes++;
-            else
-                _ = book.TotalLikes > 0 ? book.TotalLikes-- : 0;
+            else if (book.TotalLikes > 0)
+                book.TotalLikes--;
 
             _books.ReplaceOne(x => x.Id == book.Id, book);
 
@@ -131,7 +131,7 @@ namespace HoanBookListData.Services
                 return false;
 
             var userBook = _userBooks.Find(x => x.UserId == userId && x.BookId == bookId)
-                                         .FirstOrDefault();
+                                     .FirstOrDefault();
 
             if (userBook != null)
             {
@@ -181,6 +181,7 @@ namespace HoanBookListData.Services
             var items = _books.AsQueryable()
                               .WhereIf(filter.Title.HasValue(), x => x.Title.Contains(filter.Title))
                               .WhereIf(filter.Author.HasValue(), x => x.Author.Contains(filter.Author))
+                              .WhereIf(filter.MainGenre.HasValue(), x => x.MainGenre == filter.MainGenre)
                               .Where(x => filter.Rate == null || x.Rate >= filter.Rate);
 
             if (filter.SortBy.HasValue())
