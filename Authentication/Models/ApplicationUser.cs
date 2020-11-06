@@ -16,6 +16,8 @@
         public string Username { get; set; }
 
         public string[] Roles { set; get; }
+
+        public bool IsGuess => FixedUserRoles.CheckGuessRole(Roles);
     }
 
     public static class ApplicationUserExtensions

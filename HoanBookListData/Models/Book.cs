@@ -26,5 +26,33 @@ namespace HoanBookListData.Models
         public string BookCoverUrl { get; set; }
 
         public decimal Rate { get; set; }
+
+        public int TotalLikes { get; set; }
+    }
+
+    public static class BookExtensions
+    {
+        public static BookIndex ToBookIndex(this Book book)
+        {
+            return new BookIndex
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Author = book.Author,
+                MainGenre = book.MainGenre,
+                Publisher = book.Publisher,
+                BookCoverUrl = book.BookCoverUrl,
+                Rate = book.Rate,
+                TotalLikes = book.TotalLikes
+            };
+        }
+
+        public static IEnumerable<BookIndex> ToBookIndex(this IEnumerable<Book> books)
+        {
+            foreach (var book in books)
+            {
+                yield return book.ToBookIndex();
+            }
+        }
     }
 }

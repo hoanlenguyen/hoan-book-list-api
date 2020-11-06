@@ -9,11 +9,11 @@ namespace Authentication.Models
         {
            new  ApplicationUser { Id="1450c709-f24a-42fe-8c3a-299a098a0f90",
                                   Credentials= new Credentials{ Username="Hoan", Password="123qwe" }, 
-                                  Roles= new string[]{ UserRoles.User } },
+                                  Roles= new string[]{ FixedUserRoles.User } },
 
            new  ApplicationUser { Id="c84c4f3f-0d52-426f-bb23-8429fd6739d5",
                                   Credentials= new Credentials{ Username="Admin", Password="123qwe" },
-                                  Roles= new string[]{ UserRoles.Admin } }
+                                  Roles= new string[]{ FixedUserRoles.Admin } }
         };
 
         public static (bool Success, UserInfo User) CheckLoginCredentials(Credentials input)

@@ -53,7 +53,7 @@ namespace HoanBookListAPI
 
         [FunctionName(nameof(GetBookById))]
         public IActionResult GetBookById(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "books/{id}")] 
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "books/{id}")]
             HttpRequest req, string id, ILogger log)
         {
             if (string.IsNullOrEmpty(id))
@@ -62,7 +62,7 @@ namespace HoanBookListAPI
             var (verify, user) = _jwtAuth.VerifyUser(req);
 
             if (!verify)
-                return new UnauthorizedResult();            
+                return new UnauthorizedResult();
 
             return new OkObjectResult(_bookService.Get(id));
         }
@@ -82,7 +82,41 @@ namespace HoanBookListAPI
 
             var filter = JObject.Parse(requestBody)["filter"].ToObject<BookFilter>();
 
-            return new OkObjectResult(_bookService.PageIndexingItems(request, filter));
+            var userId = !user.IsGuess? user.Id : null;
+
+            return new OkObjectResult(_bookService.PageIndexingItems(userId, request, filter));
+        }
+
+        [FunctionName(nameof(BookmarkBook))]
+        public IActionResult BookmarkBook(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "books/{id}/bookmark/{bookmark}")]
+            HttpRequest req, string id, bool bookmark, ILogger log)
+        {
+            if (string.IsNullOrEmpty(id))
+                return new BadRequestObjectResult("Id is not found!");
+
+            var (verify, user) = _jwtAuth.VerifyUser(req);
+
+            if (!verify)
+                return new UnauthorizedResult();
+
+            return new OkObjectResult(_bookService.BookmarkBook(user.Id, id, bookmark));
+        }
+
+        [FunctionName(nameof(LikeBook))]
+        public IActionResult LikeBook(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "books/{id}/like/{like}")]
+            HttpRequest req, string id, bool like, ILogger log)
+        {
+            if (string.IsNullOrEmpty(id))
+                return new BadRequestObjectResult("Id is not found!");
+
+            var (verify, user) = _jwtAuth.VerifyUser(req);
+
+            if (!verify)
+                return new UnauthorizedResult();
+
+            return new OkObjectResult(_bookService.LikeBook(user.Id, id, like));
         }
     }
 }

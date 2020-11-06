@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <Folder Include="MongoDb\" />
-    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>
