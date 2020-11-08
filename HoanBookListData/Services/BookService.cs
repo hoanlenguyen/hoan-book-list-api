@@ -178,8 +178,15 @@ namespace HoanBookListData.Services
 
         private (IEnumerable<BookIndex> Items, int Count) FilterBookCollection(BookFilter filter, string userId = null, int? skip = null, int? take = null)
         {
+            if(filter.IsBookmarked)
+            {
+                var bookIndexs = GetBookmarkedBooks(userId);
+                var countBooks = bookIndexs.Count<BookIndex>();
+                return (bookIndexs, countBooks);
+            }
+
             var items = _books.AsQueryable()
-                              .WhereIf(filter.Title.HasValue(), x => x.Title.Contains(filter.Title))
+                              .WhereIf(filter.Title.HasValue(), x => x.Title.ToLower().Contains(filter.Title))
                               .WhereIf(filter.Author.HasValue(), x => x.Author.Contains(filter.Author))
                               .WhereIf(filter.MainGenre.HasValue(), x => x.MainGenre == filter.MainGenre)
                               .Where(x => filter.Rate == null || x.Rate >= filter.Rate);
@@ -222,6 +229,22 @@ namespace HoanBookListData.Services
                 }
 
                 yield return bookIndex;
+            }
+        }
+
+        private IEnumerable<BookIndex> GetBookmarkedBooks(string userId)
+        {
+            var userBooks = _userBooks.Find(x => x.UserId == userId && x.IsBookmarked).ToEnumerable();
+            foreach (var userBook in userBooks)
+            {
+                var book = _books.Find(x => x.Id == userBook.BookId).FirstOrDefault();
+                if (book != null)
+                {
+                    var bookIndex = book.ToBookIndex();
+                    bookIndex.IsBookmarked = userBook.IsBookmarked;
+                    bookIndex.IsLiked = userBook.IsLiked;
+                    yield return bookIndex;
+                }
             }
         }
     }

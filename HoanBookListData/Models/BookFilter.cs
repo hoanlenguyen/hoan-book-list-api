@@ -16,5 +16,7 @@ namespace HoanBookListData.Models
         public string SortBy { get; set; }
 
         public bool IsAsc { get; set; } = true;
+
+        public bool IsBookmarked { get; set; } = false;
     }
 }

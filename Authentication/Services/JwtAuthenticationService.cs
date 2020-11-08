@@ -24,7 +24,7 @@ namespace Authentication.Services
             var claims = new Dictionary<string, object>
             {
                 { "username", user.Username },
-                { "expires", DateTime.UtcNow.AddMinutes(120) },
+                { "expires", DateTime.UtcNow.AddDays(1) },
                 { "role", user.Roles}
             };
 
