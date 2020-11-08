@@ -26,6 +26,9 @@ namespace Authentication.Models
 
         public static (bool Success, UserInfo User) CheckLoginCredentials(Credentials input)
         {
+            input.Username = input.Username.Trim();
+            input.Password = input.Password.Trim();
+
             var user = FixedList.FirstOrDefault(x => x.Credentials.Username == input.Username
                                                 && x.Credentials.Password == input.Password);
             if (user == null)
