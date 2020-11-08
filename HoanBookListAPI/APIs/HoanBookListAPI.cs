@@ -82,9 +82,9 @@ namespace HoanBookListAPI
 
             var filter = JObject.Parse(requestBody)["filter"].ToObject<BookFilter>();
 
-            var userId = !user.IsGuess? user.Id : null;
+            //var userId = !user.IsGuess? user.Id : null;
 
-            return new OkObjectResult(_bookService.PageIndexingItems(userId, request, filter));
+            return new OkObjectResult(_bookService.PageIndexingItems(user.Id, request, filter));
         }
 
         [FunctionName(nameof(BookmarkBook))]
