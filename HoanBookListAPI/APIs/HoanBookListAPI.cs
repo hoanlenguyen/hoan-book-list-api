@@ -26,10 +26,8 @@ namespace HoanBookListAPI
 
         [FunctionName("ConnStr")]
         public IActionResult ConnectionString(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "mongodb/connstr")] HttpRequest req,
-            ILogger log)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "mongodb/connstr")] HttpRequest req)
         {
-            //log.LogInformation("C# HTTP trigger function processed a request.");
             var (verify, user) = _jwtAuth.VerifyUser(req);
 
             if (!verify)
@@ -81,8 +79,6 @@ namespace HoanBookListAPI
             var request = JObject.Parse(requestBody)["request"].ToObject<PagingRequest>();
 
             var filter = JObject.Parse(requestBody)["filter"].ToObject<BookFilter>();
-
-            //var userId = !user.IsGuess? user.Id : null;
 
             return new OkObjectResult(_bookService.PageIndexingItems(user.Id, request, filter));
         }

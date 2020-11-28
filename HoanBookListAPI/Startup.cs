@@ -1,4 +1,6 @@
-﻿using Authentication.Services;
+﻿using AspNetCore.Identity.Mongo;
+using Authentication.Models.Indentity;
+using Authentication.Services;
 using HoanBookListData.MongoDb;
 using HoanBookListData.Services;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
@@ -27,9 +29,7 @@ namespace HoanBookListAPI
 
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            //var configuration = builder.GetContext().Configuration;
-
-            builder.Services.AddJwtAuthentication();
+            var config = builder.GetContext().Configuration;
 
             builder.Services.AddOptions<MongoDbConnectionSettings>()
                 .Configure<IConfiguration>((settings, config) =>
@@ -37,6 +37,20 @@ namespace HoanBookListAPI
 
             builder.Services.AddSingleton<IMongoDbConnectionSettings>(sp =>
                             sp.GetRequiredService<IOptions<MongoDbConnectionSettings>>().Value);
+
+            builder.Services.AddIdentityMongoDbProvider<ApplicationUser, ApplicationRole>(identityOptions =>
+            {
+                identityOptions.Password.RequiredLength = 6;
+                identityOptions.Password.RequireLowercase = false;
+                identityOptions.Password.RequireUppercase = false;
+                identityOptions.Password.RequireNonAlphanumeric = false;
+                identityOptions.Password.RequireDigit = false;
+            }, mongoIdentityOptions =>
+            {
+                mongoIdentityOptions.ConnectionString = config.GetSection(DbConnectionConfigs.MongoDBConnectionSetting)["ConnectionString"];
+            });
+
+            builder.Services.AddAuthenticationServices();
 
             builder.Services.AddSingleton<MongoDbContext>();
 

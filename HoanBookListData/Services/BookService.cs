@@ -178,7 +178,7 @@ namespace HoanBookListData.Services
 
         private (IEnumerable<BookIndex> Items, int Count) FilterBookCollection(BookFilter filter, string userId = null, int? skip = null, int? take = null)
         {
-            if(filter.IsBookmarked)
+            if (filter.IsBookmarked)
             {
                 var bookIndexs = GetBookmarkedBooks(userId);
                 var countBooks = bookIndexs.Count<BookIndex>();

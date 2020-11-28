@@ -1,9 +1,9 @@
 ﻿using Authentication.Models;
-using JWT;
+using Authentication.Models.Indentity;
 using JWT.Algorithms;
 using JWT.Builder;
-using JWT.Serializers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 
@@ -11,27 +11,11 @@ namespace Authentication.Services
 {
     public class JwtAuthenticationService
     {
-        public JwtAuthenticationService()
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public JwtAuthenticationService(UserManager<ApplicationUser> userManager)
         {
-        }
-
-        public (bool Success, string Token, UserInfo User) Login(Credentials credentials)
-        {
-            var (success, user) = FixedUsers.CheckLoginCredentials(credentials);
-            if (!success)
-                return (false, "", null);
-
-            var claims = new Dictionary<string, object>
-            {
-                { "username", user.Username },
-                { "expires", DateTime.UtcNow.AddDays(1) },
-                { "role", user.Roles}
-            };
-
-            var jwtEncoder = new JwtEncoder(new HMACSHA256Algorithm(), new JsonNetSerializer(), new JwtBase64UrlEncoder());
-            var token = jwtEncoder.Encode(claims, JWTSettings.SecretKey);
-
-            return (true, token, user);
+            _userManager = userManager;
         }
 
         public (bool IsValid, UserInfo user) VerifyUser(HttpRequest request)
@@ -51,14 +35,14 @@ namespace Authentication.Services
                .MustVerifySignature()
                .Decode<IDictionary<string, object>>(token);
 
-            if (!claims.ContainsKey("username")|| !claims.ContainsKey("expires"))
+            if (!claims.ContainsKey("username") || !claims.ContainsKey("expires"))
                 return (false, null);
 
             var expires = Convert.ToDateTime(claims["expires"]);
             if (expires < DateTime.UtcNow)
                 return (false, null);
 
-            var user = FixedUsers.FindUserByUsername(Convert.ToString(claims["username"]));
+            var user = _userManager.FindByNameAsync(Convert.ToString(claims["username"])).Result;
             if (user == null)
                 return (false, null);
 
