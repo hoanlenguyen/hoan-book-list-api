@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Authentication.Models.Indentity
+namespace Authentication.Models.Identity
 {
     public interface IUserInfo
     {

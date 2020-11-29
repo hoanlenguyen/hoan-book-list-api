@@ -2,12 +2,12 @@
 using System;
 using System.ComponentModel;
 
-namespace HoanBookListData.Models.BaseEntities
+namespace MongoDbConnection.BaseEntities
 {
     public class Meta
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public DateTime? CreatedAt { get; set; } /*= DateTime.UtcNow.AddHours(7);*/
+        public DateTime? CreatedAt { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string CreatedBy { get; set; }

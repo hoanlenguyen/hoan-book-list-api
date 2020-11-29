@@ -1,6 +1,6 @@
 ﻿using AspNetCore.Identity.Mongo.Model;
 
-namespace Authentication.Models.Indentity
+namespace Authentication.Models.Identity
 {
     public class ApplicationUser : MongoUser
     {
@@ -15,7 +15,7 @@ namespace Authentication.Models.Indentity
                 Id = user.Id.ToString(),
                 Username = user.UserName,
                 Email = user.Email,
-                Roles= user.Roles
+                Roles = user.Roles
             };
         }
     }

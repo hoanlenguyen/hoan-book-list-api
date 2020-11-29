@@ -1,12 +1,12 @@
-﻿using HoanBookListData.Models.BaseEntities;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDbConnection.BaseEntities;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace HoanBookListData.Models
 {
-    public class Book : MongoEntity
+    public class Book : MongoMetaEntity
     {
         [BsonElement("Name")]
         [JsonProperty("title")]

@@ -1,5 +1,5 @@
 ﻿using Authentication.Models;
-using Authentication.Models.Indentity;
+using Authentication.Models.Identity;
 using JWT;
 using JWT.Algorithms;
 using JWT.Serializers;

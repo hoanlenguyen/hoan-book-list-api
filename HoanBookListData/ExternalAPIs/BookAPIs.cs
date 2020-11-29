@@ -42,7 +42,7 @@ namespace HoanBookListData.ExternalAPIs
                         foreach (var book in books)
                         {
                             book.MainGenre = genre;
-                            book.Meta = new Models.BaseEntities.Meta();
+                            book.Meta = new MongoDbConnection.BaseEntities.Meta();
                             book.Meta.CreatedAt = DateTime.UtcNow.AddHours(7);
                             book.SubGenres.AddRange(GenreList.GetRandomGenres());
                             book.Rate = GetRandomNumber(3, 5);

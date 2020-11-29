@@ -1,5 +1,4 @@
 ﻿using HoanBookListData.Models.Paging;
-using Newtonsoft.Json;
 
 namespace HoanBookListData.Models
 {

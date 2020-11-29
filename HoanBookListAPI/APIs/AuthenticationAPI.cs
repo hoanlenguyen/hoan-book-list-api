@@ -1,4 +1,4 @@
-using Authentication.Models.Indentity;
+using Authentication.Models.Identity;
 using Authentication.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

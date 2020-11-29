@@ -1,6 +1,6 @@
 ﻿using AspNetCore.Identity.Mongo.Model;
 
-namespace Authentication.Models.Indentity
+namespace Authentication.Models.Identity
 {
     public class ApplicationRole : MongoRole
     {

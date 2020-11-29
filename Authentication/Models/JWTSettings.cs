@@ -1,6 +1,6 @@
 ﻿namespace Authentication.Models
 {
-    internal static class JWTSettings /*: IJWTSettings*/
+    internal static class JWTSettings
     {
         public const string SecretKey = "$jwts-are-awesome$";
 
@@ -8,11 +8,4 @@
 
         public const string Audience = "https://localhost";
     }
-
-    //internal interface IJWTSettings
-    //{
-    //    public string SecretKey { get; }
-    //    public string Issuer { get; }
-    //    public string Audience { get; }
-    //}
 }

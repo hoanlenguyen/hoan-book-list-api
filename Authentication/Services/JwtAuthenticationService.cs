@@ -1,5 +1,5 @@
 ﻿using Authentication.Models;
-using Authentication.Models.Indentity;
+using Authentication.Models.Identity;
 using JWT.Algorithms;
 using JWT.Builder;
 using Microsoft.AspNetCore.Http;

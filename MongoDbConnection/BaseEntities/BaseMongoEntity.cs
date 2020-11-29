@@ -1,9 +1,9 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace HoanBookListData.Models.BaseEntities
+namespace MongoDbConnection.BaseEntities
 {
-    public class MongoEntity : BaseEntity
+    public class BaseMongoEntity
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

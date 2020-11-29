@@ -1,5 +1,5 @@
 ﻿using AspNetCore.Identity.Mongo;
-using Authentication.Models.Indentity;
+using Authentication.Models.Identity;
 using Authentication.Services;
 using HoanBookListData.Services;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
