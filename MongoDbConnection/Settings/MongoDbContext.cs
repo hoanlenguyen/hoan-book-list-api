@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 
-namespace HoanBookListData.MongoDb
+namespace MongoDbConnection.Settings
 {
     public class MongoDbContext
     {

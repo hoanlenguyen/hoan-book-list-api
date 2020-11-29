@@ -1,12 +1,12 @@
 ﻿using AspNetCore.Identity.Mongo;
 using Authentication.Models.Indentity;
 using Authentication.Services;
-using HoanBookListData.MongoDb;
 using HoanBookListData.Services;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using MongoDbConnection.Settings;
 using System.IO;
 
 [assembly: FunctionsStartup(typeof(HoanBookListAPI.Startup))]

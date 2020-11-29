@@ -2,10 +2,10 @@
 using HoanBookListData.ExternalAPIs;
 using HoanBookListData.Models;
 using HoanBookListData.Models.Paging;
-using HoanBookListData.MongoDb;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using MongoDbConnection.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;

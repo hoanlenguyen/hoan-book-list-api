@@ -1,4 +1,4 @@
-﻿namespace HoanBookListData.MongoDb
+﻿namespace MongoDbConnection.Settings
 {
     public static class DbConnectionConfigs
     {

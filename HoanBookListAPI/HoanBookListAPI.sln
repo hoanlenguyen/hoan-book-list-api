@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoanBookListData", "..\Hoan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentication", "..\Authentication\Authentication.csproj", "{39A380D7-C504-4D05-9221-EA2EED90E392}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDbConnection", "..\MongoDbConnection\MongoDbConnection.csproj", "{88A3934E-9B23-4541-A650-51125A5C5ADC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{39A380D7-C504-4D05-9221-EA2EED90E392}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39A380D7-C504-4D05-9221-EA2EED90E392}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39A380D7-C504-4D05-9221-EA2EED90E392}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88A3934E-9B23-4541-A650-51125A5C5ADC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88A3934E-9B23-4541-A650-51125A5C5ADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88A3934E-9B23-4541-A650-51125A5C5ADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88A3934E-9B23-4541-A650-51125A5C5ADC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
