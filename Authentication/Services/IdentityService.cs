@@ -14,11 +14,13 @@ namespace Authentication.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public IdentityService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public IdentityService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         public async Task<(bool Success, string Token, UserInfo User)> RegisterAsync(RegisterModel register)
@@ -30,6 +32,18 @@ namespace Authentication.Services
             if (result.Succeeded)
             {
                 var createdUser = await _userManager.FindByNameAsync(register.Username);
+
+                bool checkExist = await _roleManager.RoleExistsAsync(FixedUserRoles.User);
+
+                if (!checkExist)
+                {
+                    var role = new ApplicationRole(FixedUserRoles.User);
+                    await _roleManager.CreateAsync(role);  
+                }
+
+                await _userManager.AddToRoleAsync(createdUser, FixedUserRoles.User);
+
+                createdUser.Roles.Add(FixedUserRoles.User);
 
                 return ConvertTokenResult(createdUser);
             }
