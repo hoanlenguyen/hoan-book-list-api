@@ -3,7 +3,6 @@ using Authentication.Models.Indentity;
 using JWT.Algorithms;
 using JWT.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 
@@ -11,11 +10,8 @@ namespace Authentication.Services
 {
     public class JwtAuthenticationService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-
-        public JwtAuthenticationService(UserManager<ApplicationUser> userManager)
+        public JwtAuthenticationService()
         {
-            _userManager = userManager;
         }
 
         public (bool IsValid, UserInfo user) VerifyUser(HttpRequest request)
@@ -35,18 +31,24 @@ namespace Authentication.Services
                .MustVerifySignature()
                .Decode<IDictionary<string, object>>(token);
 
-            if (!claims.ContainsKey("username") || !claims.ContainsKey("expires"))
+            if (!claims.ContainsKey("id")
+                || !claims.ContainsKey("username")
+                || !claims.ContainsKey("expires"))
                 return (false, null);
 
             var expires = Convert.ToDateTime(claims["expires"]);
             if (expires < DateTime.UtcNow)
                 return (false, null);
 
-            var user = _userManager.FindByNameAsync(Convert.ToString(claims["username"])).Result;
-            if (user == null)
-                return (false, null);
+            var user = new UserInfo
+            {
+                Id = claims["id"].ToString(),
+                Username = claims["username"].ToString(),
+                //Email
+                //Roles
+            };
 
-            return (true, user.ToUserInfo());
+            return (true, user);
         }
     }
 }

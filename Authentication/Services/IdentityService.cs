@@ -52,11 +52,12 @@ namespace Authentication.Services
         private (bool Success, string Token, UserInfo User) ConvertTokenResult(ApplicationUser user)
         {
             var claims = new Dictionary<string, object>
-                {
-                    { "username", user.UserName },
-                    { "expires", DateTime.UtcNow.AddDays(1) },
-                    { "role", user.Roles}
-                };
+                            {
+                                { "id", user.Id.ToString() },
+                                { "username", user.UserName },
+                                { "expires", DateTime.UtcNow.AddDays(1) },
+                                { "role", user.Roles}
+                            };
 
             var jwtEncoder = new JwtEncoder(new HMACSHA256Algorithm(), new JsonNetSerializer(), new JwtBase64UrlEncoder());
 

@@ -6,7 +6,7 @@ namespace Authentication.Services
     {
         public static IServiceCollection AddAuthenticationServices(this IServiceCollection services)
         {
-            services.AddScoped<JwtAuthenticationService>();
+            services.AddSingleton<JwtAuthenticationService>();
 
             services.AddScoped<IdentityService>();
 
