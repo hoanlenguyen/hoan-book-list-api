@@ -16,25 +16,25 @@ namespace HoanBookListAPI
     public class HoanBookListAPI
     {
         private readonly JwtAuthenticationService _jwtAuth;
-        private readonly BookService _bookService;
+        private readonly IBookService _bookService;
 
-        public HoanBookListAPI(BookService bookService, JwtAuthenticationService jwtAuth)
+        public HoanBookListAPI(IBookService bookService, JwtAuthenticationService jwtAuth)
         {
             _bookService = bookService;
             _jwtAuth = jwtAuth;
         }
 
-        [FunctionName("ConnStr")]
-        public IActionResult ConnectionString(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "mongodb/connstr")] HttpRequest req)
-        {
-            var (verify, user) = _jwtAuth.VerifyUser(req);
+        //[FunctionName("ConnStr")]
+        //public IActionResult ConnectionString(
+        //    [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "mongodb/connstr")] HttpRequest req)
+        //{
+        //    var (verify, user) = _jwtAuth.VerifyUser(req);
 
-            if (!verify)
-                return new UnauthorizedResult();
+        //    if (!verify)
+        //        return new UnauthorizedResult();
 
-            return new OkObjectResult(_bookService.GetConnectionString());
-        }
+        //    return new OkObjectResult(_bookService.GetConnectionString());
+        //}
 
         [FunctionName(nameof(GetBooks))]
         public IActionResult GetBooks(
@@ -80,7 +80,7 @@ namespace HoanBookListAPI
 
             var filter = JObject.Parse(requestBody)["filter"].ToObject<BookFilter>();
 
-            return new OkObjectResult(_bookService.PageIndexingItems(user.Id, request, filter));
+            return new OkObjectResult(_bookService.GetUiList(user.Id, request, filter));
         }
 
         [FunctionName(nameof(BookmarkBook))]

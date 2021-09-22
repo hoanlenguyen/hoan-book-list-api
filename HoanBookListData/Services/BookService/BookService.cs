@@ -1,4 +1,5 @@
-﻿using HoanBookListData.Extensions;
+﻿using HoanBookListData.Enums;
+using HoanBookListData.Extensions;
 using HoanBookListData.ExternalAPIs;
 using HoanBookListData.Models;
 using HoanBookListData.Models.Paging;
@@ -13,28 +14,16 @@ using System.Threading.Tasks;
 
 namespace HoanBookListData.Services
 {
-    public class BookService
+    public class BookService:IBookService
     {
-        private string ConnectionString { get; }
-
-        private const string _BookName = "Books";
-
-        private const string _UserBookName = "UserBooks";
-
         private readonly IMongoCollection<Book> _books;
-
         private readonly IMongoCollection<UserBook> _userBooks;
 
         public BookService(MongoDbContext mongoDb)
         {
-            ConnectionString = mongoDb.ConnectionString;
-
-            _books = mongoDb.Database.GetCollection<Book>(_BookName);
-
-            _userBooks = mongoDb.Database.GetCollection<UserBook>(_UserBookName);
+            _books = mongoDb.Database.GetCollection<Book>(EntityNames.Books);
+            _userBooks = mongoDb.Database.GetCollection<UserBook>(EntityNames.UserBooks);
         }
-
-        public string GetConnectionString() => ConnectionString;
 
         public List<Book> Get() =>
             _books.Find(book => true).ToList();
@@ -82,7 +71,7 @@ namespace HoanBookListData.Services
             return true;
         }
 
-        public bool BulkUpdate(string oldName, string newName)
+        public bool BulkUpdateAuthor(string oldName, string newName)
         {
             var filter = Builders<Book>.Filter.Eq(x => x.Author, oldName);
             var update = Builders<Book>.Update.Set(x => x.Author, newName);
@@ -151,7 +140,7 @@ namespace HoanBookListData.Services
             return true;
         }
 
-        public PagingResult PageIndexingItems(string userId, PagingRequest request, BookFilter filter)
+        public PagingResult GetUiList(string userId, PagingRequest request, BookFilter filter)
         {
             if (request.CurrentPage == null || request.ItemsPerPage == null)
             {

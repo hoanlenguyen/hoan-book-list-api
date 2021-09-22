@@ -54,7 +54,7 @@ namespace HoanBookListAPI
 
             builder.Services.AddSingleton<MongoDbContext>();
 
-            builder.Services.AddSingleton<BookService>();
+            builder.Services.AddSingleton<IBookService,BookService>();
         }
     }
 }

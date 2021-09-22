@@ -44,30 +44,30 @@ namespace HoanBookListAPI
             return new OkObjectResult(new { token, user });
         }
 
-        [FunctionName(nameof(Login))]
-        public async Task<IActionResult> Login(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "login")]
-            LoginModel model)
-        {
-            var (success, token, user) = await _identify.LoginAsync(model);
+        //[FunctionName(nameof(Login))]
+        //public async Task<IActionResult> Login(
+        //   [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "login")]
+        //    LoginModel model)
+        //{
+        //    var (success, token, user) = await _identify.LoginAsync(model);
 
-            if (!success)
-                return new UnauthorizedResult();
+        //    if (!success)
+        //        return new UnauthorizedResult();
 
-            return new OkObjectResult(new { user, token });
-        }
+        //    return new OkObjectResult(new { user, token });
+        //}
 
-        [FunctionName(nameof(VerifyUser))]
-        public IActionResult VerifyUser(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "verify")]
-            HttpRequest req)
-        {
-            var (verify, user) = _jwtService.VerifyUser(req);
+        //[FunctionName(nameof(VerifyUser))]
+        //public IActionResult VerifyUser(
+        //    [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "verify")]
+        //    HttpRequest req)
+        //{
+        //    var (verify, user) = _jwtService.VerifyUser(req);
 
-            if (!verify)
-                return new UnauthorizedResult();
+        //    if (!verify)
+        //        return new UnauthorizedResult();
 
-            return new OkObjectResult(user);
-        }
+        //    return new OkObjectResult(user);
+        //}
     }
 }
