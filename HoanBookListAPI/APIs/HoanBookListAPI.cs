@@ -23,19 +23,7 @@ namespace HoanBookListAPI
             _bookService = bookService;
             _jwtAuth = jwtAuth;
         }
-
-        //[FunctionName("ConnStr")]
-        //public IActionResult ConnectionString(
-        //    [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "mongodb/connstr")] HttpRequest req)
-        //{
-        //    var (verify, user) = _jwtAuth.VerifyUser(req);
-
-        //    if (!verify)
-        //        return new UnauthorizedResult();
-
-        //    return new OkObjectResult(_bookService.GetConnectionString());
-        //}
-
+         
         [FunctionName(nameof(GetBooks))]
         public IActionResult GetBooks(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "books")] HttpRequest req,
