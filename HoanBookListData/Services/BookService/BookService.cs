@@ -18,15 +18,18 @@ namespace HoanBookListData.Services
     {
         private readonly IMongoCollection<Book> _books;
         private readonly IMongoCollection<UserBook> _userBooks;
+        private readonly string ConnectionString;
 
         public BookService(MongoDbContext mongoDb)
         {
             _books = mongoDb.Database.GetCollection<Book>(EntityNames.Books);
             _userBooks = mongoDb.Database.GetCollection<UserBook>(EntityNames.UserBooks);
+            ConnectionString = mongoDb.ConnectionString;
         }
 
-        public List<Book> Get() =>
-            _books.Find(book => true).ToList();
+        public string GetConnectionString() => ConnectionString;
+
+        public List<Book> Get() => _books.Find(book => true).ToList();
 
         public Book Get(string id)
         {
